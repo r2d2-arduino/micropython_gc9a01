@@ -56,3 +56,6 @@ tft.fill( tft.rgb( 255, 0, 0 ) ) # Fills the entire screen with red
 * **draw_circle ( x, y, radius, color, border = 1 )** - Draw circle
 * **fill_circle ( x, y, radius, color )** - Draw filled circle
 * **draw_pixel ( x, y, color )** - Draw one pixel on display
+  
+## Tools
+* **tools/font_to_py.py** - Used to convert ttf font to py-script. First of all, you need to install: `pip install freetype-py`. Then run a command similar to the example: `python font_to_py.py -x LibreBodoni-Bold.ttf 24 LibreBodoni24.py`. More details: https://github.com/peterhinch/micropython-font-to-py
