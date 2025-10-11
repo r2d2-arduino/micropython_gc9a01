@@ -6,7 +6,7 @@ Display controller driver for gc9a01 using SPI connection.
 * **examples_fb/** - a set of examples for using the library GC9A01FB_SPI.
 * **for_examples/** - files related to examples.
 * **gc9a01_spi.py** - Main library GC9A01_SPI. 
-* **gc9a01fb_spi.py** - Main library GC9A01FB_SPI. Framebuffer version, see details here: https://docs.micropython.org/en/latest/library/framebuf.html . This option is much faster, but requires more RAM ( 110kB+ ).
+* **gc9a01_spi_fb.py** - Main library GC9A01_SPI_FB. Framebuffer version, see details here: https://docs.micropython.org/en/latest/library/framebuf.html . This option is much faster, but requires more RAM ( 110kB+ ).
 
 ## Minimum code to run:
 ```python
@@ -24,7 +24,7 @@ spi = SPI( SPI_NUM, baudrate = 40_000_000, sck = Pin(SCK_PIN), mosi = Pin(MOSI_P
 
 tft = GC9A01_SPI( spi, CS_PIN, DC_PIN, RST_PIN )
 
-tft.fill( tft.rgb( 255, 0, 0 ) ) # Fills the entire screen with red
+tft.fill( tft.color565( 255, 0, 0 ) ) # Fills the entire screen with red
 ```
 
 ## Display functions:
@@ -38,7 +38,7 @@ tft.fill( tft.rgb( 255, 0, 0 ) ) # Fills the entire screen with red
 ## Image functions:
 * **draw_raw_image ( filename, x, y, width, height )** - Draw RAW image (RGB565 format) on display
 * **draw_bmp ( filename, x = 0, y = 0 )** - Draw BMP image on display
-* **rgb ( red, green, blue )** - Convert 8,8,8 bits RGB to 16 bits
+* **color565 ( red, green, blue )** - Convert 8,8,8 bits RGB to 16 bits
 
 ## Text functions:
 * **set_font ( font )** - Set font for text
