@@ -3,7 +3,7 @@ Display controller driver for gc9a01 using SPI connection.
 
 ## File Structure:
 * **examples/** - a set of examples for using the library GC9A01_SPI.
-* **examples_fb/** - a set of examples for using the library GC9A01FB_SPI.
+* **examples_fb/** - a set of examples for using the library GC9A01_SPI_FB.
 * **for_examples/** - files related to examples.
 * **gc9a01_spi.py** - Main library GC9A01_SPI. 
 * **gc9a01_spi_fb.py** - Main library GC9A01_SPI_FB. Framebuffer version, see details here: https://docs.micropython.org/en/latest/library/framebuf.html . This option is much faster, but requires more RAM ( 110kB+ ).
