@@ -25,20 +25,20 @@ spi = SPI( SPI_NUM, baudrate = 40_000_000, sck = Pin(SCK_PIN), mosi = Pin(MOSI_P
 tft = GC9A01_SPI( spi, CS_PIN, DC_PIN, RST_PIN )
 tft.set_rotation(2) # 0 = 0 degrees, 1 = 90 degrees, 2 = 180 degrees, 3 = 270 degrees
 
-COLOR_BLACK   = tft.rgb( 0, 0, 0 )
-COLOR_BLUE    = tft.rgb( 0, 0, 255 )
-COLOR_RED     = tft.rgb( 255, 0, 0 )
-COLOR_GREEN   = tft.rgb( 0, 255, 0 )
-COLOR_CYAN    = tft.rgb( 0, 255, 255 )
-COLOR_MAGENTA = tft.rgb( 255, 0, 255 )
-COLOR_YELLOW  = tft.rgb( 255, 255, 0 )
-COLOR_WHITE   = tft.rgb( 255, 255, 255 )
-COLOR_GRAY    = tft.rgb( 112, 160, 112 )
+COLOR_BLACK   = tft.color565( 0, 0, 0 )
+COLOR_BLUE    = tft.color565( 0, 0, 255 )
+COLOR_RED     = tft.color565( 255, 0, 0 )
+COLOR_GREEN   = tft.color565( 0, 255, 0 )
+COLOR_CYAN    = tft.color565( 0, 255, 255 )
+COLOR_MAGENTA = tft.color565( 255, 0, 255 )
+COLOR_YELLOW  = tft.color565( 255, 255, 0 )
+COLOR_WHITE   = tft.color565( 255, 255, 255 )
+COLOR_GRAY    = tft.color565( 112, 160, 112 )
 
 filename = 'vintage240x240.raw'
+
 if file_exists(filename):    
     tft.draw_raw_image( filename, 0, 0, 240, 240 )
-
 
 def draw_watch_second( angle, length, color ):
     center_x = tft.width  // 2
@@ -101,8 +101,9 @@ draw_analog_watch( hours, minutes, seconds )
 while 1:
     start = ticks_ms()
     
-    tft.draw_raw_image('vintage240x240.raw', 0, 0, 240, 240)
+    tft.draw_raw_image( filename, 0, 0, 240, 240 )
     draw_analog_watch( hours, minutes, seconds )
+    
     seconds += 1
     
     if seconds == 60:
@@ -117,6 +118,6 @@ while 1:
         hours = 0
     
     diff = ticks_diff( ticks_ms(), start )
-    #print(diff)
+
     if diff > 0:
         sleep_ms( 1000 - diff )

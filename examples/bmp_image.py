@@ -30,5 +30,5 @@ if file_exists(filename):
 
     tft.draw_bmp( filename, 0, 0 )
 
-    print( ( ticks_ms() - start ), 'ms' )
+    print( ( ticks_ms() - start ), 'ms' ) # 291
 

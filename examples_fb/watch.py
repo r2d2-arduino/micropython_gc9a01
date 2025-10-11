@@ -14,26 +14,26 @@ def file_exists(filename):
     except OSError:
         print("File not found:", filename)
         return False
-    
-from gc9a01fb_spi import GC9A01FB_SPI
+
+from gc9a01_spi_fb import GC9A01_SPI_FB
 from machine import SPI, Pin
 import math
 from time import ticks_ms, ticks_diff, sleep_ms
 
 spi = SPI( SPI_NUM, baudrate = 40_000_000, sck = Pin(SCK_PIN), mosi = Pin(MOSI_PIN) )
 
-tft = GC9A01FB_SPI( spi, CS_PIN, DC_PIN, RST_PIN )
+tft = GC9A01_SPI_FB( spi, CS_PIN, DC_PIN, RST_PIN )
 tft.set_rotation(2) # 0 = 0 degrees, 1 = 90 degrees, 2 = 180 degrees, 3 = 270 degrees
 
-COLOR_BLACK   = tft.rgb( 0, 0, 0 )
-COLOR_BLUE    = tft.rgb( 0, 0, 255 )
-COLOR_RED     = tft.rgb( 255, 0, 0 )
-COLOR_GREEN   = tft.rgb( 0, 255, 0 )
-COLOR_CYAN    = tft.rgb( 0, 255, 255 )
-COLOR_MAGENTA = tft.rgb( 255, 0, 255 )
-COLOR_YELLOW  = tft.rgb( 255, 255, 0 )
-COLOR_WHITE   = tft.rgb( 255, 255, 255 )
-COLOR_GRAY    = tft.rgb( 112, 160, 112 )
+COLOR_BLACK   = tft.color565( 0, 0, 0 )
+COLOR_BLUE    = tft.color565( 0, 0, 255 )
+COLOR_RED     = tft.color565( 255, 0, 0 )
+COLOR_GREEN   = tft.color565( 0, 255, 0 )
+COLOR_CYAN    = tft.color565( 0, 255, 255 )
+COLOR_MAGENTA = tft.color565( 255, 0, 255 )
+COLOR_YELLOW  = tft.color565( 255, 255, 0 )
+COLOR_WHITE   = tft.color565( 255, 255, 255 )
+COLOR_GRAY    = tft.color565( 112, 160, 112 )
 
 filename = 'images/vintage240x240.raw'
 if file_exists(filename):    

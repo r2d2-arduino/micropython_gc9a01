@@ -5,7 +5,7 @@ MOSI_PIN = 15 #SDA
 DC_PIN   = 5
 CS_PIN   = 4
 RST_PIN  = 3
-    
+
 from gc9a01_spi import GC9A01_SPI
 from machine import SPI, Pin
 from time import ticks_ms # need only for test measuring
@@ -18,15 +18,15 @@ tft.set_rotation(2) # 0 = 0 degrees, 1 = 90 degrees, 2 = 180 degrees, 3 = 270 de
 SCREEN_WIDTH  = tft.width
 SCREEN_HEIGHT = tft.height
 
-COLOR_BLACK   = tft.rgb( 0, 0, 0 )
-COLOR_BLUE    = tft.rgb( 0, 0, 255 )
-COLOR_RED     = tft.rgb( 255, 0, 0 )
-COLOR_GREEN   = tft.rgb( 0, 255, 0 )
-COLOR_CYAN    = tft.rgb( 0, 255, 255 )
-COLOR_MAGENTA = tft.rgb( 255, 0, 255 )
-COLOR_YELLOW  = tft.rgb( 255, 255, 0 )
-COLOR_WHITE   = tft.rgb( 255, 255, 255 )
-COLOR_GRAY    = tft.rgb( 112, 160, 112 )
+COLOR_BLACK   = tft.color565( 0, 0, 0 )
+COLOR_BLUE    = tft.color565( 0, 0, 255 )
+COLOR_RED     = tft.color565( 255, 0, 0 )
+COLOR_GREEN   = tft.color565( 0, 255, 0 )
+COLOR_CYAN    = tft.color565( 0, 255, 255 )
+COLOR_MAGENTA = tft.color565( 255, 0, 255 )
+COLOR_YELLOW  = tft.color565( 255, 255, 0 )
+COLOR_WHITE   = tft.color565( 255, 255, 255 )
+COLOR_GRAY    = tft.color565( 112, 160, 112 )
 
 tft.fill( COLOR_BLACK )
 
@@ -44,4 +44,4 @@ for y in range(SCREEN_HEIGHT // 8):
     tft.draw_line(0, 0, SCREEN_WIDTH, y * 8 , COLOR_GREEN)
 
 
-print( ( ticks_ms() - start ), 'ms' )
+print( ( ticks_ms() - start ), 'ms' ) # 929

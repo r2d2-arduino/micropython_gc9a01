@@ -14,14 +14,14 @@ def file_exists(filename):
     except OSError:
         print("File not found:", filename)
         return False
-    
-from gc9a01fb_spi import GC9A01FB_SPI
+
+from gc9a01_spi_fb import GC9A01_SPI_FB
 from machine import SPI, Pin
 from time import ticks_ms # need only for test measuring
 
 spi = SPI( SPI_NUM, baudrate = 40_000_000, sck = Pin(SCK_PIN), mosi = Pin(MOSI_PIN) )
 
-tft = GC9A01FB_SPI( spi, CS_PIN, DC_PIN, RST_PIN )
+tft = GC9A01_SPI_FB( spi, CS_PIN, DC_PIN, RST_PIN )
 tft.set_rotation(2) # 0 = 0 degrees, 1 = 90 degrees, 2 = 180 degrees, 3 = 270 degrees
 
 filename = 'vintage240x240.raw'
@@ -30,6 +30,6 @@ if file_exists(filename):
 
     tft.draw_raw_image( filename, 0, 0, 240, 240 )
 
-    print( ( ticks_ms() - start ), 'ms' )
+    print( ( ticks_ms() - start ), 'ms' ) # 175
     
     tft.show()

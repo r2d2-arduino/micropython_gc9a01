@@ -5,8 +5,8 @@ MOSI_PIN = 15 #SDA
 DC_PIN   = 5
 CS_PIN   = 4
 RST_PIN  = 3
-    
-from gc9a01fb_spi import GC9A01FB_SPI
+
+from gc9a01_spi_fb import GC9A01_SPI_FB
 from machine import SPI, Pin
 import LibreBodoni48 as bigFont
 import LibreBodoni24 as smallFont
@@ -37,19 +37,19 @@ def fill_arc(start_angle, end_angle, inner_radius, angle_step):
 
 spi = SPI( SPI_NUM, baudrate = 40_000_000, sck = Pin(SCK_PIN), mosi = Pin(MOSI_PIN) )
 
-tft = GC9A01FB_SPI( spi, CS_PIN, DC_PIN, RST_PIN )
+tft = GC9A01_SPI_FB( spi, CS_PIN, DC_PIN, RST_PIN )
 tft.set_rotation(2) # 0 = 0 degrees, 1 = 90 degrees, 2 = 180 degrees, 3 = 270 degrees
 
-COLOR_BLACK   = tft.rgb( 0, 0, 0 )
-COLOR_BLUE    = tft.rgb( 0, 0, 255 )
-COLOR_RED     = tft.rgb( 255, 0, 0 )
-COLOR_GREEN   = tft.rgb( 0, 255, 0 )
-COLOR_CYAN    = tft.rgb( 0, 255, 255 )
-COLOR_MAGENTA = tft.rgb( 255, 0, 255 )
-COLOR_YELLOW  = tft.rgb( 255, 255, 0 )
-COLOR_WHITE   = tft.rgb( 255, 255, 255 )
-COLOR_GRAY    = tft.rgb( 112, 160, 112 )
-COLOR_ORANGE  = tft.rgb( 255, 200, 0 )
+COLOR_BLACK   = tft.color565( 0, 0, 0 )
+COLOR_BLUE    = tft.color565( 0, 0, 255 )
+COLOR_RED     = tft.color565( 255, 0, 0 )
+COLOR_GREEN   = tft.color565( 0, 255, 0 )
+COLOR_CYAN    = tft.color565( 0, 255, 255 )
+COLOR_MAGENTA = tft.color565( 255, 0, 255 )
+COLOR_YELLOW  = tft.color565( 255, 255, 0 )
+COLOR_WHITE   = tft.color565( 255, 255, 255 )
+COLOR_GRAY    = tft.color565( 112, 160, 112 )
+COLOR_ORANGE  = tft.color565( 255, 200, 0 )
 
 start = ticks_ms()
 
@@ -66,4 +66,4 @@ fill_arc(120, 350, 20, 4)
 
 tft.show()
 
-print( ( ticks_ms() - start ), 'ms' )
+print( ( ticks_ms() - start ), 'ms' ) # 73

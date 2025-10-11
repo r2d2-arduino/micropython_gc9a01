@@ -5,7 +5,7 @@ MOSI_PIN = 15 #SDA
 DC_PIN   = 5
 CS_PIN   = 4
 RST_PIN  = 3
-    
+
 from gc9a01_spi import GC9A01_SPI
 from machine import SPI, Pin
 from time import sleep_ms
@@ -21,32 +21,32 @@ tft.fill( 0 )
 def rainbow( delay = 0 ):
     #red
     for y in range(0, 20):
-        color = tft.rgb( y * 10 + 65, 0, 0 )
+        color = tft.color565( y * 10 + 65, 0, 0 )
         tft.fill_rect(0, y * 2, SCREEN_WIDTH, 2, color)
     
     #red-green
     for y in range(0, 20):
-        color = tft.rgb(  y * 10 + 65, y * 10 + 65, 0 )
+        color = tft.color565(  y * 10 + 65, y * 10 + 65, 0 )
         tft.fill_rect(0, y * 2 + 40, SCREEN_WIDTH, 2, color)
     
     #green
     for y in range(0, 20):
-        color = tft.rgb(  0, y * 10 + 65, 0 )
+        color = tft.color565(  0, y * 10 + 65, 0 )
         tft.fill_rect(0, y* 2 + 80, SCREEN_WIDTH, 2, color)
 
     #green-blue
     for y in range(0, 20):
-        color = tft.rgb(  0, y * 10 + 65, y * 10 + 65 )
+        color = tft.color565(  0, y * 10 + 65, y * 10 + 65 )
         tft.fill_rect(0, y * 2 + 120, SCREEN_WIDTH, 2, color)
 
     #blue
     for y in range(0, 20):
-        color = tft.rgb(  0, 0, y * 10 + 65 )
+        color = tft.color565(  0, 0, y * 10 + 65 )
         tft.fill_rect(0, y * 2 + 160, SCREEN_WIDTH, 2, color)
         
     #red-blue
     for y in range(0, 20):
-        color = tft.rgb( y * 10 + 65, 0, y * 10 + 65 )
+        color = tft.color565( y * 10 + 65, 0, y * 10 + 65 )
         tft.fill_rect(0, y * 2 + 200, SCREEN_WIDTH, 2, color)
 
 rainbow()

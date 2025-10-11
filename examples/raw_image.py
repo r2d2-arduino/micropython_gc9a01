@@ -30,4 +30,4 @@ if file_exists(filename):
 
     tft.draw_raw_image( filename, 0, 0, 240, 240 )
 
-    print( ( ticks_ms() - start ), 'ms' )
+    print( ( ticks_ms() - start ), 'ms' ) # 153
