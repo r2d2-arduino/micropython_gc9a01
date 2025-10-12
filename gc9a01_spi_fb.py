@@ -1,11 +1,11 @@
 """
-GC9A01_SPI_FB v 0.1.4
-Display controller driver 
+GC9A01_SPI_FB v 0.1.5
+Display controller driver (with Framebuffer)
 
 Displays: GC9A01
 Connection: 4-line SPI
 Colors: 16-bit
-Controllers: Esp32-family, RP2-family
+Controllers: Esp32-family
  
 Project path: https://github.com/r2d2-arduino/micropython_gc9a01
 MIT License
@@ -551,7 +551,8 @@ class GC9A01_SPI_FB( FrameBuffer ):
                 i += 1
         
     @staticmethod
-    def color565(red, green, blue ):
+    @micropython.viper
+    def color565( red:int, green:int, blue:int ) -> int:
         """ Convert 8,8,8 bits RGB to 16 bits  """
         return ((blue & 0xf8) << 5 | (green & 0x1c) << 11 | (green & 0xe0) >> 5 | (red & 0xf8))
     
@@ -560,4 +561,4 @@ class GC9A01_SPI_FB( FrameBuffer ):
         self.cs.value(0)
         self.set_window( 0, 0, self.width - 1, self.height - 1 ) 
         self.spi.write( self.buffer )
-        self.cs.value(1)  
+        self.cs.value(1)    

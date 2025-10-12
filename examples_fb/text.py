@@ -1,11 +1,3 @@
-# Set your pins here
-SPI_NUM = 1
-SCK_PIN  = 14 #SCL
-MOSI_PIN = 15 #SDA
-DC_PIN   = 5
-CS_PIN   = 4
-RST_PIN  = 3
-
 from gc9a01_spi_fb import GC9A01_SPI_FB
 from machine import SPI, Pin
 import LibreBodoni24 as smallFont
@@ -13,10 +5,20 @@ from time import ticks_ms # need only for test measuring
 
 text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
 
-spi = SPI( SPI_NUM, baudrate = 40_000_000, sck = Pin(SCK_PIN), mosi = Pin(MOSI_PIN) )
+# Set your pins here
+SPI_NUM = 0
+SCK_PIN  = 6
+MOSI_PIN = 7
 
+CS_PIN   = 4
+DC_PIN   = 5
+RST_PIN  = 3
+
+spi = SPI( SPI_NUM, baudrate = 40_000_000, sck = Pin(SCK_PIN), mosi = Pin(MOSI_PIN) )
 tft = GC9A01_SPI_FB( spi, CS_PIN, DC_PIN, RST_PIN )
-tft.set_rotation(2) # 0 = 0 degrees, 1 = 90 degrees, 2 = 180 degrees, 3 = 270 degrees
+
+tft.set_rotation(0) # 0 = 0 degrees, 1 = 90 degrees, 2 = 180 degrees, 3 = 270 degrees
+
 tft.set_font( smallFont )
 
 COLOR_BLACK   = tft.color565( 0, 0, 0 )

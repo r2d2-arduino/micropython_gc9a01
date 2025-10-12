@@ -1,11 +1,3 @@
-# Set your pins here
-SPI_NUM = 1
-SCK_PIN  = 14 #SCL
-MOSI_PIN = 15 #SDA
-DC_PIN   = 5
-CS_PIN   = 4
-RST_PIN  = 3
-
 from gc9a01_spi import GC9A01_SPI
 from machine import SPI, Pin
 import LibreBodoni48 as bigFont
@@ -13,10 +5,19 @@ import LibreBodoni24 as smallFont
 from time import ticks_ms # need only for test measuring
 import math
 
-spi = SPI( SPI_NUM, baudrate = 40_000_000, sck = Pin(SCK_PIN), mosi = Pin(MOSI_PIN) )
+# Set your pins here
+SPI_NUM = 0
+SCK_PIN  = 6
+MOSI_PIN = 7
 
+CS_PIN   = 4
+DC_PIN   = 5
+RST_PIN  = 3
+
+spi = SPI( SPI_NUM, baudrate = 40_000_000, sck = Pin(SCK_PIN), mosi = Pin(MOSI_PIN) )
 tft = GC9A01_SPI( spi, CS_PIN, DC_PIN, RST_PIN )
-tft.set_rotation(2) # 0 = 0 degrees, 1 = 90 degrees, 2 = 180 degrees, 3 = 270 degrees
+
+tft.set_rotation(0) # 0 = 0 degrees, 1 = 90 degrees, 2 = 180 degrees, 3 = 270 degrees
 
 COLOR_BLACK   = tft.color565( 0, 0, 0 )
 COLOR_BLUE    = tft.color565( 0, 0, 255 )
@@ -44,11 +45,19 @@ def fill_arc(start_angle, end_angle, inner_radius, angle_step):
         theta = math.radians( angle )
         x = int( cx + radius * math.cos(theta) ) 
         y = int( cy + radius * math.sin(theta) )
-        
-        if angle > 320:
-            color = COLOR_ORANGE
-        elif angle > 270:
-            color = COLOR_YELLOW        
+
+        diff_angle = angle - start_angle
+        #print(diff_angle)
+        if diff_angle > 339:
+            color = tft.color565( 0, 0, 255 )
+        elif diff_angle > 254:
+            color = tft.color565( 510 - (diff_angle * 3), 0, 255 )
+        elif diff_angle > 171:
+            color = tft.color565( 255, 0, diff_angle * 3 - 513 )
+        elif diff_angle > 85:
+            color = tft.color565( 255, 513 - (diff_angle * 3), 0 )
+        else:
+            color = tft.color565( diff_angle * 3, 255, 0 )        
         
         tft.fill_circle( x, y, inner_radius, color)
         angle += angle_step
@@ -63,9 +72,9 @@ tft.set_font( smallFont )
 tft.draw_text("CO2", 94, 76, COLOR_MAGENTA, COLOR_BLACK)
 tft.draw_text("ppm", 94, 140, COLOR_RED, COLOR_BLACK)
 
-fill_arc(120, 350, 20, 4)
+fill_arc(120, 370, 20, 4)
 
 
-print( ( ticks_ms() - start ), 'ms' ) # 726
+print( ( ticks_ms() - start ), 'ms' ) # 789
 
 

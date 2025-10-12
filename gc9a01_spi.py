@@ -19,6 +19,8 @@ from struct import pack
 
 class GC9A01_SPI():
     
+    BUFFER_INTERNAL = 2097
+    
     def __init__( self, spi, cs_pin, dc_pin, rst_pin, width = 240, height = 240 ):
         """ Constructor
         Args
@@ -312,7 +314,7 @@ class GC9A01_SPI():
         self.cs.value(0)        
         self.set_window(x, y, x + width - 1, y + height - 1)
         
-        if ( width * height < 2097 ):
+        if ( width * height < self.BUFFER_INTERNAL ):
             self.spi.write( pack( '<H', color ) * width * height )
         else:
             buffer = pack( '<H', color ) * width
@@ -362,10 +364,11 @@ class GC9A01_SPI():
         thickness (int): thickness of line   
         color (int): RGB color
         """         
-        self.fill_rect(x, y, width, thickness, color)
-        self.fill_rect(x , y + thickness, thickness, height, color)
-        self.fill_rect(x + thickness, y + height, width, thickness, color)        
-        self.fill_rect(x + width, y, thickness, height, color)
+        self.fill_rect(x, y, width, thickness, color)                     
+        self.fill_rect(x, y + height - thickness, width, thickness, color) 
+        self.fill_rect(x, y, thickness, height, color)                     
+        self.fill_rect(x + width - thickness, y, thickness, height, color)
+        
         
     @micropython.viper
     def draw_line( self, x0:int, y0:int, x1:int, y1:int, color:int ):
@@ -591,11 +594,13 @@ class GC9A01_SPI():
             byte_width = width * 2
             total_bytes = height * byte_width
             
-            if ( total_bytes < 2097 ):
-                self.spi.write( f.read( total_bytes ) )
+            if ( total_bytes < self.BUFFER_INTERNAL ):
+                image_buffer = f.read( total_bytes )
+                self.spi.write( image_buffer )
             else:
                 for _ in range( height ):
-                    self.spi.write( f.read( byte_width ) )
+                    image_buffer = f.read( byte_width )
+                    self.spi.write( image_buffer )
 
             self.cs.value( 1 )  # Chip disabled
         
@@ -676,7 +681,8 @@ class GC9A01_SPI():
             self.spi.write( spi_buffer )
         
     @staticmethod
-    def color565(red, green, blue ):
+    @micropython.viper
+    def color565( red:int, green:int, blue:int ) -> int:
         """ Convert 8,8,8 bits RGB to 16 bits  """
         #return ( (red << 11) & 0xF800 | (green << 5) & 0x07E0 | blue & 0x001F )
         return ((blue & 0xf8) << 5 | (green & 0x1c) << 11 | (green & 0xe0) >> 5 | (red & 0xf8))

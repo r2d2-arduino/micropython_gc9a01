@@ -1,10 +1,20 @@
+from gc9a01_spi import GC9A01_SPI
+from machine import SPI, Pin
+from time import ticks_ms # need only for test measuring
+
 # Set your pins here
-SPI_NUM = 1
-SCK_PIN  = 14 #SCL
-MOSI_PIN = 15 #SDA
-DC_PIN   = 5
+SPI_NUM = 0
+SCK_PIN  = 6
+MOSI_PIN = 7
+
 CS_PIN   = 4
+DC_PIN   = 5
 RST_PIN  = 3
+
+spi = SPI( SPI_NUM, baudrate = 40_000_000, sck = Pin(SCK_PIN), mosi = Pin(MOSI_PIN) )
+tft = GC9A01_SPI( spi, CS_PIN, DC_PIN, RST_PIN )
+
+tft.set_rotation(0) # 0 = 0 degrees, 1 = 90 degrees, 2 = 180 degrees, 3 = 270 degrees
 
 def file_exists(filename):
     import os
@@ -14,15 +24,6 @@ def file_exists(filename):
     except OSError:
         print("File not found:", filename)
         return False
-    
-from gc9a01_spi import GC9A01_SPI
-from machine import SPI, Pin
-from time import ticks_ms # need only for test measuring
-
-spi = SPI( SPI_NUM, baudrate = 40_000_000, sck = Pin(SCK_PIN), mosi = Pin(MOSI_PIN) )
-
-tft = GC9A01_SPI( spi, CS_PIN, DC_PIN, RST_PIN )
-tft.set_rotation(2) # 0 = 0 degrees, 1 = 90 degrees, 2 = 180 degrees, 3 = 270 degrees
 
 filename = 'bird240x240.bmp'
 if file_exists(filename):    

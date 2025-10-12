@@ -1,28 +1,20 @@
-# Set your pins here
-SPI_NUM = 1
-SCK_PIN  = 14 #SCL
-MOSI_PIN = 15 #SDA
-DC_PIN   = 5
-CS_PIN   = 4
-RST_PIN  = 3
-
-def file_exists(filename):
-    import os
-    try:
-        os.stat(filename)
-        return True
-    except OSError:
-        print("File not found:", filename)
-        return False
-    
 from gc9a01_spi import GC9A01_SPI
 from machine import SPI, Pin
 import math
 from time import ticks_ms, ticks_diff, sleep_ms
 
-spi = SPI( SPI_NUM, baudrate = 40_000_000, sck = Pin(SCK_PIN), mosi = Pin(MOSI_PIN) )
+# Set your pins here
+SPI_NUM = 0
+SCK_PIN  = 6
+MOSI_PIN = 7
 
+CS_PIN   = 4
+DC_PIN   = 5
+RST_PIN  = 3
+
+spi = SPI( SPI_NUM, baudrate = 40_000_000, sck = Pin(SCK_PIN), mosi = Pin(MOSI_PIN) )
 tft = GC9A01_SPI( spi, CS_PIN, DC_PIN, RST_PIN )
+
 tft.set_rotation(2) # 0 = 0 degrees, 1 = 90 degrees, 2 = 180 degrees, 3 = 270 degrees
 
 COLOR_BLACK   = tft.color565( 0, 0, 0 )
@@ -37,6 +29,15 @@ COLOR_GRAY    = tft.color565( 112, 160, 112 )
 
 filename = 'vintage240x240.raw'
 
+def file_exists(filename):
+    import os
+    try:
+        os.stat(filename)
+        return True
+    except OSError:
+        print("File not found:", filename)
+        return False
+    
 if file_exists(filename):    
     tft.draw_raw_image( filename, 0, 0, 240, 240 )
 
@@ -119,5 +120,5 @@ while 1:
     
     diff = ticks_diff( ticks_ms(), start )
 
-    if diff > 0:
-        sleep_ms( 1000 - diff )
+    print(diff, 'ms')
+    sleep_ms( 1000 - diff )
