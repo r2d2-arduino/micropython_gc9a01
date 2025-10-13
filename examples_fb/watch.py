@@ -8,12 +8,13 @@ SPI_NUM = 0
 SCK_PIN  = 6
 MOSI_PIN = 7
 
-CS_PIN   = 4
-DC_PIN   = 5
-RST_PIN  = 3
+CS_PIN  = 4
+DC_PIN  = 5
+RST_PIN = 3
+BLK_PIN = None # Set to None if the display doesn't have a backlight pin
 
 spi = SPI( SPI_NUM, baudrate = 40_000_000, sck = Pin(SCK_PIN), mosi = Pin(MOSI_PIN) )
-tft = GC9A01_SPI_FB( spi, CS_PIN, DC_PIN, RST_PIN )
+tft = GC9A01_SPI_FB( spi, CS_PIN, DC_PIN, RST_PIN, BLK_PIN )
 
 tft.set_rotation(0) # 0 = 0 degrees, 1 = 90 degrees, 2 = 180 degrees, 3 = 270 degrees
 
@@ -119,6 +120,6 @@ while 1:
         hours = 0
     
     diff = ticks_diff( ticks_ms(), start )
-    #print(diff)
-    if diff > 0:
-        sleep_ms( 1000 - diff )
+    print(diff, 'ms')
+
+    sleep_ms( 1000 - diff )

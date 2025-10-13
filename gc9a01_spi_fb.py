@@ -1,5 +1,5 @@
 """
-GC9A01_SPI_FB v 0.1.5
+GC9A01_SPI_FB v 0.1.6
 Display controller driver (with Framebuffer)
 
 Displays: GC9A01
@@ -19,21 +19,31 @@ from framebuf import FrameBuffer, RGB565
 
 class GC9A01_SPI_FB( FrameBuffer ):
     
-    def __init__( self, spi, cs_pin, dc_pin, rst_pin, width = 240, height = 240 ):
+    def __init__( self, spi, cs_pin, dc_pin, rst_pin, blk_pin = None,
+                  width = 240, height = 240 ):
         """ Constructor
         Args
         spi  (object): SPI
-        cs_pin   (int): CS pin number (Chip Select)
-        dc_pin   (int): DC pin number (command/parameter mode)
-        rst_pin  (int): RST pin number (Reset)
+        cs_pin  (int): Chip Select pin number
+        dc_pin  (int): Data/Command pin number
+        rst_pin (int): Reset pin number 
+        blk_pin (int): Backlight pin number
         width   (int): Screen width in pixels (less)
-        height  (int): Screen height in pixels        
+        height  (int): Screen height in pixels       
         """ 
         self.spi = spi
         self.rst = Pin( rst_pin, Pin.OUT, value = 0 )
         self.dc  = Pin( dc_pin,  Pin.OUT, value = 0 )
         self.cs  = Pin( cs_pin,  Pin.OUT, value = 1 )
+        self.blk = None
         
+        if blk_pin is not None:
+            self.blk = Pin(blk_pin, Pin.OUT, value = 1)
+            
+            self.blk_pwm = PWM( self.blk)
+            self.blk_pwm.freq( 2000 )
+            self.blk_pwm.duty( 1023 )
+            
         self._font = None
         self._rotation = 0
         
@@ -260,6 +270,17 @@ class GC9A01_SPI_FB( FrameBuffer ):
             self.vert_scroll_start_address(y + 1)
             sleep_ms(delay)        
 
+    def set_backlight ( self, duty = 1023 ):
+        """ Set Backlight PWM Pin
+        Args
+        duty (int): Duty value: 0..1023
+        """
+        if self.blk is not None:
+            if 0 <= duty < 1024:
+                self.blk_pwm.duty(duty)
+            else:
+                print("Duty value out of range: 0..1023")
+                
     @micropython.viper
     def set_window( self, x0:int, y0:int, x1:int, y1:int ):
         """ Sets the starting position and the area of drawing on the display
