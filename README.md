@@ -6,9 +6,15 @@ Display controller driver for gc9a01 using SPI connection.
 ## File Structure:
 * **examples/** - a set of examples for using the library GC9A01_SPI.
 * **examples_fb/** - a set of examples for using the library GC9A01_SPI_FB.
-* **for_examples/** - files related to examples.
-* **gc9a01_spi.py** - Main library GC9A01_SPI. 
-* **gc9a01_spi_fb.py** - Main library GC9A01_SPI_FB. Framebuffer version, see details here: https://docs.micropython.org/en/latest/library/framebuf.html . This option is much faster, but requires more RAM ( 110kB+ ).
+* **examples_dma/** - a set of examples for using the library GC9A01_SPI_FB with DMA.
+* **resources/** - files related to examples.
+* **gc9a01_spi_base.py** - Base library for GC9A01_SPI and GC9A01_SPI_FB.
+* **gc9a01_spi.py** - Main library GC9A01_SPI.
+* **gc9a01_spi_fb.py** - Main library GC9A01_SPI_FB. Framebuffer and DMA version.
+
+## Dependencies:
+The main libraries inherit from the graphics libraries tft_draw:
+https://github.com/r2d2-arduino/tft_draw
 
 ## Minimum code to run:
 ```python
@@ -34,31 +40,3 @@ tft.fill( tft.color565( 255, 0, 0 ) ) # Fills the entire screen with red
 * **idle_mode ( on = True )** - Enables or disables idle mode on display.
 * **scroll ( delay = 5 )** - Scrolling on the screen at a given speed.
 * **show ( )** - Displays the contents of the buffer on the screen ( gc9a01_spi_fb only ).
-
-## Image functions:
-* **draw_raw_image ( filename, x, y, width, height )** - Draw RAW image (RGB565 format) on display.
-* **draw_bmp ( filename, x = 0, y = 0 )** - Draw BMP image on display.
-* **color565 ( red, green, blue )** - Convert 8,8,8 bits RGB to 16 bits.
-
-## Text functions:
-* **set_font ( font )** - Set font for text.
-* **draw_text ( text, x, y, color )** - Draw text on display.
-* **draw_text_wrap ( text, x, y, color )** - Draw text on display (wrapped version).
-* **draw_bitmap ( bitmap, x, y, color )** - Draw one bitmap on display.
-
-## Draw functions ( for gc9a01_spi only ):
-* **fill ( color )** - Fill whole screen.
-* **fill_rect ( x, y, width, height, color )** - Draw filled rectangle.
-* **draw_vline ( x, y, height, color, thickness = 1 )** - Draw vertical line.
-* **draw_hline ( x, y, width, color, thickness = 1 )** - Draw horizontal line.
-* **draw_rect ( x, y, width, height, color, thickness = 1 )** - Draw rectangle.
-* **draw_line ( x0, y0, x1, y1, color )** - Draw line using Bresenham's Algorithm.
-* **draw_circle ( x, y, radius, color, border = 1 )** - Draw circle.
-* **fill_circle ( x, y, radius, color )** - Draw filled circle.
-* **draw_pixel ( x, y, color )** - Draw one pixel on display.
-* **draw_arc ( x, y, radius, start_angle, end_angle, color )** - Draw unfinished circle.
-* **fill_arc ( x, y, radius, start_angle, end_angle, thickness, color )** - Draws an unfinished circle filled with circles.
-  
-## Tools
-* **tools/font_to_py.py** - Used to convert ttf font to py-script. First of all, you need to install: `pip install freetype-py`. Then run a command similar to the example: `python font_to_py.py -x LibreBodoni-Bold.ttf 24 LibreBodoni24.py`. More details: https://github.com/peterhinch/micropython-font-to-py
-* **tools / img2rgb565.py** - Used to convert BMP-image to RAW RGB565 format. Usage: `python img2rgb565.py <your_image>`. Raw images load faster and use less memory.
