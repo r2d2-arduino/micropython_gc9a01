@@ -1,7 +1,7 @@
 from gc9a01_spi_fb import GC9A01_SPI_FB
 from machine import SPI, Pin
-import LibreBodoni48 as bigFont
-import LibreBodoni24 as smallFont
+import resources.LibreBodoni48 as bigFont
+import resources.LibreBodoni24 as smallFont
 from time import ticks_ms # need only for test measuring
 import math
 
@@ -16,7 +16,7 @@ RST_PIN = 3
 BLK_PIN = None # Set to None if the display doesn't have a backlight pin
 
 spi = SPI( SPI_NUM, baudrate = 40_000_000, sck = Pin(SCK_PIN), mosi = Pin(MOSI_PIN) )
-tft = GC9A01_SPI_FB( spi, CS_PIN, DC_PIN, RST_PIN, BLK_PIN )
+tft = GC9A01_SPI_FB( spi, CS_PIN, DC_PIN, RST_PIN, BLK_PIN, bgr = True )
 
 tft.set_rotation(0) # 0 = 0 degrees, 1 = 90 degrees, 2 = 180 degrees, 3 = 270 degrees
 
@@ -66,7 +66,7 @@ start = ticks_ms()
 tft.fill( COLOR_BLACK )
 
 tft.set_font( bigFont )
-tft.draw_text("1321", 70, 100, COLOR_BLUE)
+tft.draw_text("1320", 70, 100, COLOR_BLUE)
 
 tft.set_font( smallFont )
 tft.draw_text("CO2", 94, 76, COLOR_MAGENTA)
@@ -76,4 +76,5 @@ fill_arc( 120, 370, 20, 4 )
 
 tft.show()
 
-print( ( ticks_ms() - start ), 'ms' ) # 74
+print( ( ticks_ms() - start ), 'ms' )
+#pico 78 ms

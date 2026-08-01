@@ -14,7 +14,7 @@ RST_PIN = 3
 BLK_PIN = None # Set to None if the display doesn't have a backlight pin
 
 spi = SPI( SPI_NUM, baudrate = 40_000_000, sck = Pin(SCK_PIN), mosi = Pin(MOSI_PIN) )
-tft = GC9A01_SPI( spi, CS_PIN, DC_PIN, RST_PIN, BLK_PIN )
+tft = GC9A01_SPI( spi, CS_PIN, DC_PIN, RST_PIN, BLK_PIN, bgr = True )
 
 tft.set_rotation(2) # 0 = 0 degrees, 1 = 90 degrees, 2 = 180 degrees, 3 = 270 degrees
 
@@ -28,7 +28,7 @@ COLOR_YELLOW  = tft.color565( 255, 255, 0 )
 COLOR_WHITE   = tft.color565( 255, 255, 255 )
 COLOR_GRAY    = tft.color565( 112, 160, 112 )
 
-filename = 'vintage240x240.raw'
+filename = 'resources/vintage240x240.raw'
 
 def file_exists(filename):
     import os

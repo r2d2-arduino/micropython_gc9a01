@@ -1,9 +1,6 @@
 from gc9a01_spi_fb import GC9A01_SPI_FB
-from machine import SPI, Pin
-import resources.LibreBodoni24 as smallFont
+from pio_spi import PIO_SPI
 from time import ticks_ms # need only for test measuring
-
-text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
 
 # Set your pins here
 SPI_NUM = 0
@@ -15,12 +12,14 @@ DC_PIN  = 5
 RST_PIN = 3
 BLK_PIN = None # Set to None if the display doesn't have a backlight pin
 
-spi = SPI( SPI_NUM, baudrate = 40_000_000, sck = Pin(SCK_PIN), mosi = Pin(MOSI_PIN) )
-tft = GC9A01_SPI_FB( spi, CS_PIN, DC_PIN, RST_PIN, BLK_PIN, bgr = True )
+# standart SPI dosn't work with dma
+piospi = PIO_SPI( sck = SCK_PIN, mosi = MOSI_PIN )
+tft = GC9A01_SPI_FB( piospi, CS_PIN, DC_PIN, RST_PIN, BLK_PIN, bgr = True, dma = True )
 
 tft.set_rotation(0) # 0 = 0 degrees, 1 = 90 degrees, 2 = 180 degrees, 3 = 270 degrees
 
-tft.set_font( smallFont )
+SCREEN_WIDTH  = tft.width
+SCREEN_HEIGHT = tft.height
 
 COLOR_BLACK   = tft.color565( 0, 0, 0 )
 COLOR_BLUE    = tft.color565( 0, 0, 255 )
@@ -36,9 +35,19 @@ tft.fill( COLOR_BLACK )
 
 start = ticks_ms()
 
-tft.draw_text_wrap(text, 0, 0, COLOR_WHITE)
-tft.draw_text("Simple text", 70, 110, COLOR_MAGENTA)
+tft.rect(35, 35, 80, 80, COLOR_RED)
 
-tft.show()
-print( ( ticks_ms() - start ), 'ms' ) 
-#pico 90 ms
+tft.rect(35, 125, 80, 80, COLOR_MAGENTA, True)
+
+tft.ellipse(180, 125, 60, 60, COLOR_YELLOW, True)
+
+tft.ellipse(120, 120, 119, 119, COLOR_BLUE)
+
+for y in range(SCREEN_HEIGHT // 8):
+    tft.line(0, 0, SCREEN_WIDTH, y * 8 , COLOR_GREEN)
+
+tft.show() 
+
+print( ( ticks_ms() - start ), 'ms' )
+#pico 45 ms
+#dma 11 + 16 = 27

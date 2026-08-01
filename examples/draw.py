@@ -13,7 +13,7 @@ RST_PIN = 3
 BLK_PIN = None # Set to None if the display doesn't have a backlight pin
 
 spi = SPI( SPI_NUM, baudrate = 40_000_000, sck = Pin(SCK_PIN), mosi = Pin(MOSI_PIN) )
-tft = GC9A01_SPI( spi, CS_PIN, DC_PIN, RST_PIN, BLK_PIN )
+tft = GC9A01_SPI( spi, CS_PIN, DC_PIN, RST_PIN, BLK_PIN, bgr = True )
 
 tft.set_rotation(0) # 0 = 0 degrees, 1 = 90 degrees, 2 = 180 degrees, 3 = 270 degrees
 
@@ -45,5 +45,5 @@ tft.draw_circle(120, 120, 120, COLOR_BLUE, 2)
 for y in range(SCREEN_HEIGHT // 8):
     tft.draw_line(0, 0, SCREEN_WIDTH, y * 8 , COLOR_GREEN)
 
-
-print( ( ticks_ms() - start ), 'ms' ) # 929
+print( ( ticks_ms() - start ), 'ms' )
+#pico  823 ms

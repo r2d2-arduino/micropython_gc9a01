@@ -13,7 +13,7 @@ RST_PIN = 3
 BLK_PIN = None # Set to None if the display doesn't have a backlight pin
 
 spi = SPI( SPI_NUM, baudrate = 40_000_000, sck = Pin(SCK_PIN), mosi = Pin(MOSI_PIN) )
-tft = GC9A01_SPI( spi, CS_PIN, DC_PIN, RST_PIN, BLK_PIN )
+tft = GC9A01_SPI( spi, CS_PIN, DC_PIN, RST_PIN, BLK_PIN, bgr = True )
 
 tft.set_rotation(0) # 0 = 0 degrees, 1 = 90 degrees, 2 = 180 degrees, 3 = 270 degrees
 
@@ -26,11 +26,13 @@ def file_exists(filename):
         print("File not found:", filename)
         return False
 
-filename = 'bird240x240.bmp'
+filename = 'resources/bird240x240.bmp'
 if file_exists(filename):    
     start = ticks_ms()
 
     tft.draw_bmp( filename, 0, 0 )
 
-    print( ( ticks_ms() - start ), 'ms' ) # 291
+    print( ( ticks_ms() - start ), 'ms' )
+    
+#pico  284
 

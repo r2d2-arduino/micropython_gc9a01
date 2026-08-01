@@ -13,7 +13,7 @@ RST_PIN = 3
 BLK_PIN = None # Set to None if the display doesn't have a backlight pin
 
 spi = SPI( SPI_NUM, baudrate = 40_000_000, sck = Pin(SCK_PIN), mosi = Pin(MOSI_PIN) )
-tft = GC9A01_SPI( spi, CS_PIN, DC_PIN, RST_PIN, BLK_PIN )
+tft = GC9A01_SPI( spi, CS_PIN, DC_PIN, RST_PIN, BLK_PIN, bgr = True )
 
 tft.set_rotation(0) # 0 = 0 degrees, 1 = 90 degrees, 2 = 180 degrees, 3 = 270 degrees
 
@@ -26,10 +26,12 @@ def file_exists(filename):
         print("File not found:", filename)
         return False
     
-filename = 'vintage240x240.raw'
+filename = 'resources/vintage240x240.raw'
 if file_exists(filename):    
     start = ticks_ms()
 
     tft.draw_raw_image( filename, 0, 0, 240, 240 )
 
-    print( ( ticks_ms() - start ), 'ms' ) # 153
+    print( ( ticks_ms() - start ), 'ms' )
+    
+#pico 57

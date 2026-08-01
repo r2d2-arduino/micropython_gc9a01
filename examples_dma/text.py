@@ -1,5 +1,5 @@
 from gc9a01_spi_fb import GC9A01_SPI_FB
-from machine import SPI, Pin
+from pio_spi import PIO_SPI
 import resources.LibreBodoni24 as smallFont
 from time import ticks_ms # need only for test measuring
 
@@ -15,8 +15,9 @@ DC_PIN  = 5
 RST_PIN = 3
 BLK_PIN = None # Set to None if the display doesn't have a backlight pin
 
-spi = SPI( SPI_NUM, baudrate = 40_000_000, sck = Pin(SCK_PIN), mosi = Pin(MOSI_PIN) )
-tft = GC9A01_SPI_FB( spi, CS_PIN, DC_PIN, RST_PIN, BLK_PIN, bgr = True )
+# standart SPI dosn't work with dma
+piospi = PIO_SPI( sck = SCK_PIN, mosi = MOSI_PIN )
+tft = GC9A01_SPI_FB( piospi, CS_PIN, DC_PIN, RST_PIN, BLK_PIN, bgr = True, dma = True )
 
 tft.set_rotation(0) # 0 = 0 degrees, 1 = 90 degrees, 2 = 180 degrees, 3 = 270 degrees
 
@@ -40,5 +41,7 @@ tft.draw_text_wrap(text, 0, 0, COLOR_WHITE)
 tft.draw_text("Simple text", 70, 110, COLOR_MAGENTA)
 
 tft.show()
+
 print( ( ticks_ms() - start ), 'ms' ) 
 #pico 90 ms
+#dma  54 + 16 = 70
